@@ -2,7 +2,7 @@
 description: Recueil de facilité d'installation sur linux
 ---
 
-# agitbook4linux
+# Introduction
 
 Recueil de facilité d'installation sur linux
 
