@@ -65,7 +65,7 @@ mickael@docker:~$ ip a
 On vient de finir la configuration des cartes et leur adresse IP. on passe à la configuration du nom de la machine. Une machine a un nom court et un nom long, le fqdn. Le nom long devrait être l'association du nom court avec le domaine. Et c'est important sur des machines gérés par FreeIPA.
 
 ~~~bash
-mickael@docker:~$ hostname -a
+mickael@docker:~$ hostname
 docker
 mickael@docker:~$ hostname -f
 docker.jobjects.org
@@ -87,15 +87,62 @@ mickael@docker:~$ sudo hostnamectl
       Architecture: x86-64
 ~~~
 
-Le hostnamectl positionne deux valeurs (la veille et la nouvelle)
+Le hostnamectl positionne la valeur dans deux endroits
+
+~~~bash
 mickael@docker:~$ cat /etc/hostname
 docker
 mickael@docker:~$ cat /proc/sys/kernel/hostname
 docker
+~~~
 
-Alors le domainname,
+Mais il faut remplir à la main, une ligne dans /etc/hosts
+
+~~~bash
+mickael@docker:~$ cat /etc/hosts | grep docker
+192.168.56.116  docker.jobjects.org     docker
+~~~
+
+> **_NOTE:_** Sur linux, le fichier /etc/hosts, l'ordre des colonnes est important : **IP \tab FQDN \tab HOSTNAME**
+
+On a fait la moitié des choses, le domaine DNS, reste le NIS/YP. Alors le domainname est particulier, c'est NIS/YP. Pour avoir le domainname du DNS il faut faire la commande suivante :
+
+~~~bash
+mickael@docker:~$ hostname -d
+jobjects.org
+~~~
+
+Mais le kernel n'est pas encore configure pour NIS/YP, en effet :
+
+~~~bash
+mickael@docker:~$ cat /proc/sys/kernel/domainname
+(none)
+~~~
+
+Pour se faire, on sort les grand moyen, et on positionne sur un sysctl :
+
+~~~bash
 mickael@docker:~$ cat /etc/sysctl.d/domain-name.conf
 kernel.domainname=jobjects.org
+~~~
 
-domainname
+Là, on a finit et on reboot avec sa commande préféré :
+
+~~~bash
+sudo shutdown -r now
+# ou
 sudo reboot
+~~~
+
+On vérifie le bon positionnement du domainname NIS/YP et DNS (tant qu'à faire identique):
+
+~~~bash
+mickael@docker:~$ cat /proc/sys/kernel/domainname
+jobjects.org
+mickael@docker:~$ domainname
+jobjects.org
+mickael@docker:~$ dnsdomainname
+jobjects.org
+~~~
+
+> **_NOTE:_** Pourquoi faire NIS/YP et DNS ? Parceque de nombreux programmes et shell qu'on trouve en entreprise ou ailleur, récupère le domainname en faisant la commande suivante : domainname. RTFD (read the fucking doc) : Don't use the command domainname to get the DNS domain name  because it will show the NIS domain name and not the DNS domain name.
