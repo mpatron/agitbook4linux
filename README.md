@@ -6,6 +6,8 @@ description: Recueil de facilité d'installation sur linux
 
 Recueil de facilité d'installation sur linux
 
+* [Sommaire](SUMMARY.md)
+
 Sources:
 
 - [github](https://github.com/mpatron/agitbook4linux)

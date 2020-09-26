@@ -30,6 +30,18 @@ network:
 
 > _**NOTE:**_ Sur VirtualBox, la gateway de la carte réseau sur "private network" ne doit pas avoir de gateway. On aurait envie de mettre 192.168.56.1, mais, si c'est fait, l'accès à internet ne fonctionnera pas. Quand la gateway est possitionnée, en même une règle de routage est positionné sur de any vers 192.168.56.1. Le problème est que l'ordre de routage n'est pas bien maitrise et la carte sur private network arrive avant la carte sur NAT. Et là, il n'y a point d'internet :-\(.
 
+```bash
+mickael@docker:~$ sudo ip route show
+default via 192.168.56.1 dev enp0s3 proto kernel src 192.168.56.116 metric 100 #<<== problème de routage vers internet
+default via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100
+10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.15
+10.0.2.2 dev enp0s3 proto dhcp scope link src 10.0.2.15 metric 100
+172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1
+172.18.0.0/16 dev br-dd3769767b29 proto kernel scope link src 172.18.0.1
+172.20.0.0/16 dev br-0a1032b65a0d proto kernel scope link src 172.20.0.1 linkdown
+192.168.56.0/24 dev enp0s8 proto kernel scope link src 192.168.56.116
+```
+
 Appliquer la configuration qui vient d'être écrite
 
 ```bash
