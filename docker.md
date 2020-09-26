@@ -1,12 +1,16 @@
 # Docker sous Ubuntu 20.04 LTS
 
+~~~bash
 sudo apt -y update
 sudo apt -y install apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
 sudo apt -y update
+~~~
 
 On a dans le cache de la repo docker :
+
+~~~bash
 mickael@docker:~$ apt-cache policy docker-ce
 docker-ce:
   Installé : (aucun)
@@ -22,11 +26,17 @@ docker-ce:
         500 https://download.docker.com/linux/ubuntu focal/stable amd64 Packages
      5:19.03.9~3-0~ubuntu-focal 500
         500 https://download.docker.com/linux/ubuntu focal/stable amd64 Packages
+~~~
 
-On installe
+On installe docker. Les dépendance __docker-ce-cli__ et __containerd.io__ sont installés à partir de __docker-ce__.
+
+~~~bash
 mickael@docker:~$ sudo apt -y install docker-ce
-// dépendance résolu : mickael@docker:~$ sudo apt -y install docker-ce docker-ce-cli containerd.io
-....
+~~~
+
+On vérifie que le service docker fonctionne.
+
+~~~bash
 mickael@docker:~$ sudo systemctl status docker
 ● docker.service - Docker Application Container Engine
      Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
@@ -49,11 +59,18 @@ sept. 19 17:23:38 docker.jobjects.org dockerd[2719]: time="2020-09-19T17:23:38.3
 sept. 19 17:23:38 docker.jobjects.org dockerd[2719]: time="2020-09-19T17:23:38.380660888Z" level=info msg="Daemon has completed init>
 sept. 19 17:23:38 docker.jobjects.org dockerd[2719]: time="2020-09-19T17:23:38.395425983Z" level=info msg="API listen on /run/docker>
 sept. 19 17:23:38 docker.jobjects.org systemd[1]: Started Docker Application Container Engine.
+~~~
 
+On ajoute l'utilisateur courant. Pas la peine de le faire si on est root. Là, je suis sur Ubuntu 20.04 LTS, alors il faut le faire.
+
+~~~bash
 mickael@docker:~$ sudo usermod -aG docker ${USER}
+~~~
 
-=== logout ===
+Il faut se déloguer pour récupérer les nouveaux droits donc faire un __logout__!
+On vérifie que hello-world fonctionne.
 
+~~~bash
 mickael@docker:~$ docker run hello-world
 Unable to find image 'hello-world:latest' locally
 latest: Pulling from library/hello-world
@@ -81,7 +98,13 @@ Share images, automate workflows, and more with a free Docker ID:
 
 For more examples and ideas, visit:
  https://docs.docker.com/get-started/
+~~~
 
+## Script de nétoyage docker
+
+Voici un petit script de nétoyage de docker. Avec le temps, les versions successives des containers, car va commencer à peser lourd sur le disque pour rien.
+
+~~~bash
 mickael@docker:~$ cat ./clean-all-in-docker.sh
 #!/bin/bash
 # Stop all
@@ -92,8 +115,13 @@ docker rm $(docker ps -a -q)
 docker rmi $(docker images -q)
 docker volume prune -f
 docker system prune -a -f
+~~~
 
+## Installation de docker-compose
 
+La méthode à partir des source de docker
+
+~~~bash
 mickael@docker:~$ sudo curl -L "https://github.com/docker/compose/releases/download/1.27.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 [sudo] password for mickael:
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -103,5 +131,11 @@ mickael@docker:~$ sudo curl -L "https://github.com/docker/compose/releases/downl
 mickael@docker:~$ sudo chmod +x /usr/local/bin/docker-compose
 mickael@docker:~$ docker-compose --version
 docker-compose version 1.27.3, build 4092ae5d
+~~~
+
+Pour information, AWX a besoin des librairies python de docker compose, cette méthode est obligatoire.
+
+~~~bash
 # Et aussi, car c'est important pour le déploiement, python doit avoir les librairies python de docker :
 mickael@docker:~$ sudo pip3 install docker-compose==1.27.3
+~~~
