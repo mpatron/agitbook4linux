@@ -8,7 +8,7 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt -y update
 ~~~
 
-On a dans le cache de la repo docker :
+On vérifie que dans le cache de la repo docker, il y a bien le package docker :
 
 ~~~bash
 mickael@docker:~$ apt-cache policy docker-ce
