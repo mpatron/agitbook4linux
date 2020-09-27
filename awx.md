@@ -34,3 +34,23 @@ awx_alternate_dns_servers="192.168.56.121"
 mickael@docker:~/awx/installer$ ansible-playbook -i inventory install.yml -vv
 Sur une autre console :
 mickael@docker:~$docker logs -f awx_postgres
+
+grep -v -e '^[[:space:]]*$' ~/awx/installer/inventory | grep -v '^#'
+sed -e "/^[[:space:]]*$/d" -e "/^#/d" /etc/chrony.conf
+https://www.tutorialspoint.com/unix/unix-regular-expressions.htm
+
+sudo apt -y update && sudo apt -y dist-upgrade
+
+
+---
+hosts:
+  - host: idm1.jobjects.org
+    groups: [ipaservers]
+  - host: docker.jobjects.org
+    groups: [ipaservers]
+  - host: node1.jobjects.org
+    groups: [ipaservers, moncluster]
+  - host: node2.jobjects.org
+    groups: [ipaservers, moncluster]
+  - host: node3.jobjects.org
+    groups: [ipaservers, moncluster]

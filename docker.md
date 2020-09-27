@@ -137,5 +137,7 @@ Pour information, AWX a besoin des librairies python de docker compose, cette m√
 
 ~~~bash
 # Et aussi, car c'est important pour le d√©ploiement, python doit avoir les librairies python de docker :
+mickael@docker:~$ sudo apt install python3-pip git pwgen vim
+mickael@docker:~$ sudo pip3 install requests==2.14.2
 mickael@docker:~$ sudo pip3 install docker-compose==1.27.3
 ~~~
