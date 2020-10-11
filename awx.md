@@ -54,3 +54,4 @@ hosts:
     groups: [ipaservers, moncluster]
   - host: node3.jobjects.org
     groups: [ipaservers, moncluster]
+
