@@ -1,8 +1,11 @@
 # Traefik
 
-Source : https://www.bardina.net/traefik-gitlab-docker/
+## Sources :
 
-docker-compose.yml
+- [https://www.bardina.net/traefik-gitlab-docker/](https://www.bardina.net/traefik-gitlab-docker/)
+- [http://www.sebastien-fauvart.fr/post/continuous-integration-part-1/](http://www.sebastien-fauvart.fr/post/continuous-integration-part-1/)
+
+## docker-compose.yml
 
 ~~~docker
 version: '3'

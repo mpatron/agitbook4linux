@@ -41,7 +41,7 @@ https://www.tutorialspoint.com/unix/unix-regular-expressions.htm
 
 sudo apt -y update && sudo apt -y dist-upgrade
 
-
+~~~text
 ---
 hosts:
   - host: idm1.jobjects.org
@@ -54,4 +54,24 @@ hosts:
     groups: [ipaservers, moncluster]
   - host: node3.jobjects.org
     groups: [ipaservers, moncluster]
+~~~
 
+~~~bash
+ansible@docker:~/monprojet$ cat hosts
+## set up ssh user name and path to python3 ##
+[all:vars]
+ansible_user='ansible'
+ansible_become=yes
+ansible_become_method=sudo
+ansible_python_interpreter='/usr/bin/env python3'
+
+##########################
+## our aws server names
+###########################
+[servers]
+node1.jobjects.org
+node2.jobjects.org
+node3.jobjects.org
+
+ansible@docker:~/monprojet$ ansible-playbook -i hosts update.yml -K
+~~~
