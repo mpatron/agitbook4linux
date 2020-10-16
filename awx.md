@@ -1,3 +1,5 @@
+https://computingforgeeks.com/install-and-configure-ansible-awx-on-centos/
+
 mickael@docker:~$ git clone https://github.com/ansible/awx.git
 Cloning into 'awx'...
 remote: Enumerating objects: 9, done.
