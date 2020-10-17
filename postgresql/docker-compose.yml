@@ -1,25 +1,53 @@
 version: '3.6'
 services: 
-    postgres:
-        image: postgres
-        restart: always
-        environment: 
-            - DATABASE_HOST=127.0.0.1
-            # - POSTGRES_USER=root
-            - POSTGRES_PASSWORD=Welcome1!
-            #- POSTGRES_DB=root  
-        ports: 
-            - "5432:5432"
-        volumes:
-            - ./data:/var/lib/postgresql/data
-            - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
-    
-    pgadmin-compose:
-        image: dpage/pgadmin4
-        environment: 
-            PGADMIN_DEFAULT_EMAIL: "postgresql@gmail.com"
-            PGADMIN_DEFAULT_PASSWORD: "Welcome1!"
-        ports: 
-            - "16543:80"
-        depends_on: 
-            - postgres    
+  traefik:
+    image: "traefik:v2.3"
+    container_name: "traefik"
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080      
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./conf/traefik.toml:/etc/traefik/traefik.toml:ro
+      # - ./acme.json:/acme.json
+    networks:
+      - mynetwork
+  postgres:
+    image: postgres
+    restart: always
+    environment: 
+      - DATABASE_HOST=127.0.0.1
+      # - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=Welcome1!
+      #- POSTGRES_DB=root  
+    ports: 
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+    networks:
+      - mynetwork
+  pgadmin:
+    image: dpage/pgadmin4
+    environment: 
+        PGADMIN_DEFAULT_EMAIL: "postgresql@gmail.com"
+        PGADMIN_DEFAULT_PASSWORD: "Welcome1!"
+    ports: 
+      - "16543:80"
+    depends_on: 
+      - postgres
+    labels:
+      # Explicitly tell Traefik to expose this container
+      - "traefik.enable=true"
+      # The domain the service will respond to
+      - "traefik.http.routers.pgadmin.rule=Host(`docker.jobjects.org`)"
+      # Allow request only from the predefined entry point named "web"
+      - "traefik.http.routers.pgadmin.entrypoints=insecure"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    external: true
