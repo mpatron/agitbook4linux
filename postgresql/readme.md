@@ -8,3 +8,6 @@ Puis configurer sur
 Host: postgres:5432
 Login: postgres
 Password: Welcome1!
+
+http://pgadmin.docker.jobjects.org
+http://docker.jobjects.org:8080/dashboard

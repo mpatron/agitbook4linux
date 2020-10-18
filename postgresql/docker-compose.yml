@@ -27,6 +27,8 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
       - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+    labels:
+      - "traefik.enable=false"
     networks:
       - mynetwork
   pgadmin:
@@ -42,7 +44,6 @@ services:
     labels:
       # Explicitly tell Traefik to expose this container
       - "traefik.enable=true"
-      - "traefik.port=80"
       - "traefik.http.routers.pgadmin.entrypoints=insecure"
       - "traefik.http.routers.pgadmin.rule=Host(`pgadmin.docker.jobjects.org`)"
       - "traefik.docker.network=mynetwork"
