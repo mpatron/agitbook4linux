@@ -14,7 +14,7 @@
 
 [api]
   dashboard = true
-  debug = false
+  debug = true
   insecure = true
 
 [entryPoints]
