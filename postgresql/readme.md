@@ -1,3 +1,10 @@
+# Readme
+
+création du reseau virtuel dans docker
+
+~~~bash
+docker network create mynetwork
+~~~
 
 Avec firefox aller sur
 http://http://docker.jobjects.org:16543
@@ -29,3 +36,6 @@ docker exec -it postgres_pgadmin_1
 
 docker-compose exec pgadmin python /pgadmin4/setup.py --load-servers /mnt/data/pgadmin-conf.json --user postgresql@gmail.com
 docker-compose exec pgadmin python /pgadmin4/setup.py --load-servers /mnt/data/pgadmin-conf.json --user postgresql@gmail.com
+
+
+https://www.pgadmin.org/docs/pgadmin4/development/container_deployment.html
