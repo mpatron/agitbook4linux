@@ -197,5 +197,6 @@ microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard --addr
 #https://node1.jobjects.org:10443
 
 ...
+sudo microk8s.reset
 sudo snap remove microk8s
 ~~~
