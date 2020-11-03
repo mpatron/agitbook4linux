@@ -200,3 +200,6 @@ microk8s kubectl port-forward -n kube-system service/kubernetes-dashboard --addr
 sudo microk8s.reset
 sudo snap remove microk8s
 ~~~
+
+Mettre en place traefic dans kubernetes
+https://doc.traefik.io/traefik/v2.0/user-guides/crd-acme/#ingressroute-definition
